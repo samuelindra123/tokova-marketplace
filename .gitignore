@@ -1,0 +1,25 @@
+# generic
+*.DS_Store
+*.log
+
+# node
+node_modules
+dist
+build
+
+# nestjs
+dist
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# env
+.env
+.env.production
+.env.development
+.env.local
+.env.test
+
+# jest
+coverage
