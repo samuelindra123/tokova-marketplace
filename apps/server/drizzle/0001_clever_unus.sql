@@ -1,0 +1,1 @@
+ALTER TABLE "vendors" ADD COLUMN "store_name_changed_at" timestamp;
