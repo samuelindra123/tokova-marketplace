@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 import { TokovaLogo } from '@/components/TokovaLogo';
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
@@ -67,7 +67,7 @@ export default function ResetPasswordPage() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                         </div>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-3">Password Success Diubah!</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-3">Password Successfully Changed!</h2>
                         <p className="text-slate-600 mb-6">
                             Your password has been successfully updated. Please login with your new password.
                         </p>
@@ -95,7 +95,7 @@ export default function ResetPasswordPage() {
                         </Link>
                         <h1 className="text-2xl font-bold text-slate-900">Reset Password</h1>
                         <p className="text-slate-500 mt-2">
-                            Enter new password you
+                            Enter your new password
                         </p>
                     </div>
 
@@ -114,7 +114,7 @@ export default function ResetPasswordPage() {
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    Password Baru
+                                    New Password
                                 </label>
                                 <div className="relative">
                                     <input
@@ -124,7 +124,7 @@ export default function ResetPasswordPage() {
                                         required
                                         minLength={8}
                                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-12"
-                                        placeholder="Minimal 8 characters"
+                                        placeholder="Minimum 8 characters"
                                     />
                                     <button
                                         type="button"
@@ -147,7 +147,7 @@ export default function ResetPasswordPage() {
 
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    Konfirmasi Password
+                                    Confirm Password
                                 </label>
                                 <input
                                     type={showPassword ? 'text' : 'password'}
@@ -177,5 +177,17 @@ export default function ResetPasswordPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function ResetPasswordPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+            </div>
+        }>
+            <ResetPasswordForm />
+        </Suspense>
     );
 }
