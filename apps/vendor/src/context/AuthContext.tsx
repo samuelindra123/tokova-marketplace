@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { api, AuthResponse, VendorProfilee } from '@/lib/api';
+import { api, AuthResponse, VendorProfile } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
 interface User {
@@ -13,7 +13,7 @@ interface User {
 
 interface AuthContextType {
     user: User | null;
-    vendor: VendorProfilee | null;
+    vendor: VendorProfile | null;
     loading: boolean;
     error: string | null;
     login: (email: string, password: string) => Promise<{ success: boolean; vendorStatus?: string }>;
@@ -34,7 +34,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
-    const [vendor, setVendor] = useState<VendorProfilee | null>(null);
+    const [vendor, setVendor] = useState<VendorProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const { data, error } = await api.get<User>('/auth/me');
         if (data && data.role === 'VENDOR') {
             setUser(data);
-            await fetchVendorProfilee();
+            await fetchVendorProfile();
         } else if (error) {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
@@ -61,8 +61,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
     };
 
-    const fetchVendorProfilee = async () => {
-        const { data } = await api.get<VendorProfilee>('/vendor/store');
+    const fetchVendorProfile = async () => {
+        const { data } = await api.get<VendorProfile>('/vendor/store');
         if (data) {
             setVendor(data);
         }
@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(data.user);
 
             // Fetch vendor profile to get status
-            const { data: vendorData } = await api.get<VendorProfilee>('/vendor/store');
+            const { data: vendorData } = await api.get<VendorProfile>('/vendor/store');
             if (vendorData) {
                 setVendor(vendorData);
                 return { success: true, vendorStatus: vendorData.status };

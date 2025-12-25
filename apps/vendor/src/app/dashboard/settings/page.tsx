@@ -4,7 +4,7 @@ import { useEffect, useState, FormEvent, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { api, VendorProfilee } from '@/lib/api';
+import { api, VendorProfile } from '@/lib/api';
 import { TokovaLogo } from '@/components/TokovaLogo';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
@@ -122,7 +122,7 @@ export default function SettingsPage() {
         setMessage('');
 
         try {
-            const updateData: Partial<VendorProfilee> & { logo?: string } = {
+            const updateData: Partial<VendorProfile> & { logo?: string } = {
                 description,
                 phone,
                 logo: logoUrl,
@@ -133,7 +133,7 @@ export default function SettingsPage() {
                 updateData.storeName = storeName;
             }
 
-            const { data, error: apiError } = await api.put<VendorProfilee>('/vendor/store', updateData);
+            const { data, error: apiError } = await api.put<VendorProfile>('/vendor/store', updateData);
 
             if (apiError) {
                 setError(apiError);
